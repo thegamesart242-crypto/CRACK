@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<style>
+:root{
+  --bg:#05070d;
+  --panel:#0b101b;
+  --panel2:#0f1726;
+  --line:#202b40;
+  --blue:#147cff;
+  --blue2:#4da3ff;
+  --cyan:#63d7ff;
+  --text:#f4f7fb;
+  --muted:#8f9aad;
+  --success:#4ee38b;
+  --danger:#ff5364;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 80% 15%,rgba(20,124,255,.15),transparent 30%),
+    radial-gradient(circle at 15% 85%,rgba(77,163,255,.08),transparent 28%),
+    linear-gradient(135deg,#03050a,#080d17 55%,#05070d);
+  color:var(--text);
+  font-family:Inter,Segoe UI,Arial,sans-serif;
+  overflow-x:hidden;
+}
+body:before{
+  content:"";
+  position:fixed;inset:0;pointer-events:none;opacity:.28;
+  background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+  background-size:38px 38px;
+}
+#headerId{
+  position:relative;
+  width:min(1050px,92%);
+  margin:35px auto 0;
+  padding:42px 42px 34px;
+  background:rgba(11,16,27,.78)!important;
+  border:1px solid var(--line);
+  border-radius:24px;
+  box-shadow:0 25px 80px rgba(0,0,0,.38),inset 0 1px rgba(255,255,255,.04);
+  backdrop-filter:blur(18px);
+  color:var(--text)!important;
+}
+#headerId:after{
+  content:"PS3 HEN • EXPLOIT CORE";
+  display:block;
+  margin-top:24px;
+  color:var(--blue2);
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:3px;
+}
+#headerId h1{
+  color:#fff!important;
+  font-size:clamp(32px,5vw,62px);
+  line-height:1;
+  margin-bottom:18px;
+  letter-spacing:-2px;
+}
+#headerId h1:before{
+  content:"◆ ";
+  color:var(--blue);
+}
+#headerId span{
+  color:var(--muted)!important;
+  display:block;
+  max-width:850px;
+  line-height:1.7;
+  font-size:14px;
+}
+#headerId h3{
+  margin:18px 0;
+  font-size:14px;
+  line-height:1.5;
+  color:var(--cyan)!important;
+}
+#headerId h3:nth-of-type(2){color:var(--success)!important}
+#headerId h3:nth-of-type(3){color:#dbe3ef!important}
+#headerId h3:nth-of-type(4){color:var(--danger)!important}
+hr{
+  border:0;
+  height:1px;
+  background:linear-gradient(90deg,transparent,var(--line),transparent);
+  margin:25px 0;
+}
+body>p,body>#result,body>#log,body>#exploit,body>#trigger,body>#footer{
+  width:min(1050px,92%);
+  margin-left:auto;
+  margin-right:auto;
+}
+body>p{
+  margin-top:18px;
+  padding:22px 24px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:rgba(11,16,27,.72);
+  color:var(--muted);
+  box-shadow:0 15px 45px rgba(0,0,0,.2);
+}
+button{
+  appearance:none;
+  border:0;
+  border-radius:11px;
+  padding:14px 24px;
+  color:#fff;
+  background:linear-gradient(135deg,#0b69df,#2393ff);
+  font-weight:800;
+  letter-spacing:.2px;
+  cursor:pointer;
+  box-shadow:0 10px 28px rgba(20,124,255,.25);
+  transition:.25s ease;
+}
+button:hover{transform:translateY(-2px);filter:brightness(1.1)}
+button:active{transform:translateY(0)}
+#btnReset{
+  background:#111827;
+  border:1px solid #2a364c;
+  box-shadow:none;
+  margin-top:12px;
+}
+input[type=checkbox]{
+  accent-color:var(--blue);
+  width:16px;height:16px;
+  vertical-align:middle;
+  margin:0 7px;
+}
+#result{
+  margin-top:22px;
+  min-height:35px;
+  padding:20px;
+  border-radius:15px;
+  border:1px solid #26344a;
+  background:rgba(8,13,23,.85);
+  color:var(--text)!important;
+}
+#result h1,#result h2,#result h3{
+  color:var(--text)!important;
+  font-size:18px;
+}
+#result font{color:inherit!important}
+#progressBox{
+  margin-top:14px;
+  padding:16px 18px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:rgba(7,12,21,.88);
+  box-shadow:0 12px 35px rgba(0,0,0,.18);
+}
+.progress-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  margin-bottom:10px;
+  color:var(--muted);
+  font-size:12px;
+  font-weight:700;
+}
+#progressPercent{
+  color:var(--blue2);
+  font-size:13px;
+  min-width:38px;
+  text-align:right;
+}
+.progress-track{
+  width:100%;
+  height:8px;
+  overflow:hidden;
+  border-radius:20px;
+  background:#161f2e;
+  border:1px solid #26344a;
+}
+#log{display:none!important}
+#progressBar{
+  width:0%;
+  height:100%;
+  border-radius:20px;
+  background:linear-gradient(90deg,#147cff,#63d7ff);
+  box-shadow:0 0 16px rgba(20,124,255,.55);
+  transition:width .35s ease;
+}
+#footer{
+  margin-top:45px;
+  margin-bottom:30px;
+  text-align:center;
+  height:1px;
+  background:linear-gradient(90deg,transparent,var(--line),transparent);
+}
+@media(max-width:700px){
+  #headerId{padding:30px 22px;border-radius:18px}
+  #headerId h1{font-size:34px}
+  body>p{padding:18px}
+  button{width:100%;margin:5px 0}
+}
+</style>
+
+<script src="ps3hen_v100.js"></script>
+<meta charset="UTF-8"> 
+<title>PS3 HEN Auto Installer</title>
+<script>
+(function(){
+  var bar = document.getElementById("progressBar");
+  var pct = document.getElementById("progressPercent");
+  var txt = document.getElementById("progressText");
+
+  function setProgress(value, message){
+    value = Math.max(0, Math.min(100, value));
+    if(bar) bar.style.width = value + "%";
+    if(pct) pct.textContent = Math.round(value) + "%";
+    if(txt && message) txt.textContent = message;
+  }
+
+  window.setHENProgress = setProgress;
+
+  // Visual progress only; the original HEN engine remains unchanged.
+  setProgress(5, "Préparation de l'exploit...");
+  setTimeout(function(){ setProgress(18, "Recherche mémoire..."); }, 700);
+  setTimeout(function(){ setProgress(35, "Initialisation ROP..."); }, 1800);
+  setTimeout(function(){ setProgress(55, "Chargement du payload..."); }, 3000);
+  setTimeout(function(){ setProgress(72, "Préparation de HEN..."); }, 4500);
+  setTimeout(function(){ setProgress(88, "Installation en cours..."); }, 6000);
+})();
+</script>
+<script>
+function downloadhen()
+{
+	window.location.href = 'http://ps3xploit.me/hen/installer/' + fwVersion + '/PS3HEN.p3t';
+}
+function downloadhenD()
+{
+	window.location.href = 'http://ps3xploit.me/hen/installer/' + fwVersion + 'D/PS3HEN.p3t';
+}
+
+function initROP(init)
+{
+	try
+	{
+		if(init===true){frame_fails=0;search_base_off=0;search_size_ext=0;}
+		if(t_out!==0){clearTimeout(t_out);t_out=0;}
+		offset_array=[];
+		disable_all();
+		clearLogEntry();
+		xtra_data_addr=0;
+		stack_frame_addr=0;
+		jump_2_addr=0;
+		jump_1_addr=0;
+		var usb_fp_addr=0, index_key_addr=0;
+		var search_max_threshold=70*0x100000; // 70Mb maximum memory search
+		var search_base=0x80100000;//0x80190000;//
+		var search_size=2*mbytes;
+		search_size_ext=0*mbytes;
+		search_base_off=0*mbytes;
+		total_loops++;
+		
+		xtra_data=start_x.convert()+usb_sp.convert()
+		+index_key.convert(true)
+		+unescape("\uFD7E");
+		while(xtra_data_addr===0)
+		{
+			if(search_max_threshold<search_size){load_check();return;}
+			xtra_data=xtra_data.replaceAt(0,hexh2bin(0x7EFD));
+			xtra_data_addr=findJsVariableOffset("xtra_data",xtra_data,search_base,search_size);
+			search_max_threshold-=search_size;
+		}
+		
+		
+		usb_fp_addr=xtra_data_addr+start_x.convertedSize()-0x4;
+		index_key_addr=usb_fp_addr+usb_sp.convertedSize();
+		//############################ Building stack frame ###############################################################
+		stack_frame=stack_frame_hookup()
+		+store_word(0x89FFFF00,hen_installer_bytes)
+		+store_word(0x8a000004,sp_exit)
+		+store_word(0x8a000014,gadget_mod8_addr)
+		+syscall(sc_fs_open,usb_fp_addr,fs_flag_readonly,0x8e000000,0,0,0,0,0)
+		+syscall_r3r5_p2p(sc_fs_read,0x8e000000,0x8a000000,0x110000,0x8e000008,0,0,0,0,0,0)
+		+syscall_r3_p2p(sc_fs_close,0x8e000000,0,0,0,0,0,0,0,0,0)
+		+stack_frame_swap(0x8a000000)
+		+stack_frame_exit();
+//############################ End stack frame ###############################################################		
+		while(stack_frame_addr===0)
+		{
+			if(search_max_threshold<search_size+search_size_ext){frame_fails++;if((frame_fails%10)===0){search_base_off+=0;search_size_ext+=0;}load_check();return;}
+			stack_frame=stack_frame.replaceAt(0,hexh2bin(0x2A2F));
+			stack_frame_addr=findJsVariableOffset("stack_frame",stack_frame,search_base+search_base_off,search_size+search_size_ext);
+			if(stack_frame_addr==-1)if(search_max_threshold<search_size+search_size_ext){frame_fails++;load_check();return;}
+			search_max_threshold-=search_size+search_size_ext;
+		}
+		jump_2=unescape("\u0102\u7EFB")+fill_by_16bytes(0x30,0x8282)+hexw2bin(stack_frame_addr)+unescape("\uFB7E");		
+		while(jump_2_addr===0)
+		{
+			if(search_max_threshold<search_size){load_check();return;}
+			jump_2=jump_2.replaceAt(0,hexh2bin(0x7EFB));
+			jump_2_addr=findJsVariableOffset("jump_2",jump_2,search_base,search_size);
+			if(jump_2_addr==-1)if(search_max_threshold<search_size){load_check();return;}
+			search_max_threshold-=search_size;
+		}
+		jump_1=unescape("\u4141\u7EFA")+hexw2bin(jump_2_addr)+unescape("\uFA7E");
+		while(jump_1_addr===0)
+		{
+			if(search_max_threshold<search_size){load_check();return;}
+			jump_1=jump_1.replaceAt(0,hexh2bin(0x7EFA));
+			jump_1_addr=findJsVariableOffset("jump_1",jump_1,search_base,search_size);
+			if(jump_1_addr==-1)if(search_max_threshold<search_size){load_check();return;}
+			search_max_threshold-=search_size;
+		}
+		var sf=checkMemory(stack_frame_addr-0x4,0x8000,stack_frame.length);
+		var x=checkMemory(xtra_data_addr-0x4,0x1000,xtra_data.length);
+		var j2=checkMemory(jump_2_addr-0x4,0x1000,jump_2.length);
+		var j1=checkMemory(jump_1_addr-0x4,0x1000,jump_1.length);
+		if((j2===jump_2)&&(j1===jump_1)&&(x===xtra_data)&&(sf===stack_frame))
+		{
+			if(t_out!==0){clearTimeout(t_out);}
+			showResult(hr+"<h1><b><font color=%22386E38%22>Auto HEN installer initialized successfully.</font></b></h1><h3><b><font color=%22000000%22><span style='color:#000000;'>The HEN installation payload will launch automatically!</span></b></h3>");
+			//enable_trigger();
+			setTimeout(function () {
+			  triggerX();
+			}, 3000);
+		}
+		else
+		{
+			if(x!==xtra_data)logAdd("xtra_data mismatch in memory!");
+			if(sf!==stack_frame)logAdd("stack_frame mismatch in memory!");
+			if(j2!==jump_2)logAdd("jump_2 mismatch in memory!");
+			if(j1!==jump_1)logAdd("jump_1 mismatch in memory!");
+			//logAdd("String mismatch in memory!");
+			load_check();
+		}
+	}
+	catch(e)
+	{
+		debug=true;
+		logAdd(br+"HEN Enabler initialization failed because the following exception was thrown during execution:"+br+e+" at : "+e.lineNumber);
+		debug=false;
+	}
+}
+
+function triggerX()
+{
+		clearLogEntry();
+		showResult(hr+"<h2><b><span style='color:#000000;'>Installing HEN...</span></b></h2>");
+		disable_all();
+		setTimeout(trigger,1000,jump_1_addr);
+		setTimeout(rop_exit_hen,5000,hr+"<h1><b><font color=%22386E38%22>HEN is successfully installed</font></b></h1>","<h1><b><font color='red'>HEN Failure! Restart PS3 and retry!</font></b></h1>");
+		cleanGUI();
+}
+</script>
+</head>
+	<body id="bodyId" onload="javascript:downloadhen()">
+	<div id="headerId">
+	<h1>PS3 HEN Auto Installer</h1>
+	
+	</div><hr>
+	<p><button id="btnROP" type="button" onclick="initROP(true);" autofocus>Auto Install HEN</button> | Auto-Close Browser <input type="checkbox" id="auto_close" name="aclose" checked="checked" onclick="autoclose();"/><span id="dex_txt" style="visibility:hidden"> | DEX mode<input type="checkbox" id="dex" name="DEX" disabled="" onclick="dex();"/> * If you check the DEX Mode box and do not get an alert, reload browser or refresh page, or enabling HEN will freeze!</span></p>
+	<div id="result"></div><br>
+	
+  <div class="progress-head">
+    <span id="progressText">Initialisation de HEN...</span>
+    <strong id="progressPercent">0%</strong>
+  </div>
+  <div class="progress-track">
+    <div id="progressBar"></div>
+  </div>
+</div>
+	<div id="exploit" ></div>
+	<div id="trigger"></div>
+	<div id="footer"></div>
+	<script>
+		writeEnvInfo();
+		ps3chk();
+	</script>
+	</body>
+</html>
